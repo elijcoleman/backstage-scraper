@@ -5,9 +5,12 @@ const puppeteer = require("puppeteer");
     console.log("🚀 Launching Puppeteer...");
 
     const browser = await puppeteer.launch({
-      headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"]
-    });
+  headless: 'new', // explicitly use the new headless mode
+  args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  // Try using Render's Chrome if Puppeteer can't find its own Chromium
+  executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
+});
+
 
     console.log("🌐 Opening new page...");
     const page = await browser.newPage();
