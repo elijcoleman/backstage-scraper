@@ -5,11 +5,11 @@ const puppeteer = require("puppeteer");
     console.log("🚀 Launching Puppeteer...");
 
     const browser = await puppeteer.launch({
-  headless: 'new', // explicitly use the new headless mode
-  args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  // Try using Render's Chrome if Puppeteer can't find its own Chromium
-  executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
+  headless: "new", // use new headless mode
+  args: ["--no-sandbox", "--disable-setuid-sandbox"]
+  // no executablePath set here
 });
+
 
 
     console.log("🌐 Opening new page...");
