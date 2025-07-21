@@ -4,8 +4,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-  "postinstall": "puppeteer install"
-},
+    "postinstall": "node scripts/install-chromium.js"
+  },
   "dependencies": {
     "puppeteer": "^21.3.8"
   },
