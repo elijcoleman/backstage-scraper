@@ -5,17 +5,16 @@ const puppeteer = require("puppeteer");
     console.log("🚀 Launching Puppeteer...");
 
     const browser = await puppeteer.launch({
-  headless: "new", // use new headless mode
-  args: ["--no-sandbox", "--disable-setuid-sandbox"]
-  // no executablePath set here
-});
-
-
+      headless: "new", // use the new headless mode
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      executablePath: puppeteer.executablePath(), // explicitly use bundled Chromium
+    });
 
     console.log("🌐 Opening new page...");
     const page = await browser.newPage();
 
-    const url = "https://www.backstage.com/casting/?geo=-118.2868%2C33.9993&radius=250&location=Los+Angeles%2C+California&exclude_worldwide=True&sort_by=relevance";
+    const url =
+      "https://www.backstage.com/casting/?geo=-118.2868%2C33.9993&radius=250&location=Los+Angeles%2C+California&exclude_worldwide=True&sort_by=relevance";
 
     console.log(`🔗 Navigating to: ${url}`);
     await page.goto(url, { waitUntil: "networkidle2" });
@@ -29,7 +28,7 @@ const puppeteer = require("puppeteer");
     console.log("🔍 Scraping listings...");
     const listings = await page.evaluate(() => {
       const cards = document.querySelectorAll('[data-test="casting-call-card"]');
-      return Array.from(cards).map(card => ({
+      return Array.from(cards).map((card) => ({
         title: card.querySelector('[data-test="casting-call-title"]')?.innerText,
         company: card.querySelector('[data-test="company-name"]')?.innerText,
         date: card.querySelector('[data-test="posted-date"]')?.innerText,
@@ -45,7 +44,6 @@ const puppeteer = require("puppeteer");
 
     await browser.close();
     console.log("🎉 Scraper finished successfully!");
-
   } catch (error) {
     console.error("❌ Scraper crashed with error:");
     console.error(error);
