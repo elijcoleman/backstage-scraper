@@ -5,10 +5,10 @@ const puppeteer = require("puppeteer");
     console.log("🚀 Launching Puppeteer...");
 
     const browser = await puppeteer.launch({
-      headless: "new", // use the new headless mode
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
-      executablePath: puppeteer.executablePath(), // explicitly use bundled Chromium
-    });
+  headless: "new",
+  args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  // no executablePath here
+});
 
     console.log("🌐 Opening new page...");
     const page = await browser.newPage();
