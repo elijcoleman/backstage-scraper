@@ -9,7 +9,7 @@ const fs = require("fs");
     console.log("🚀 Launching Puppeteer with stealth...");
 
     const browser = await puppeteerExtra.launch({
-      headless: new,
+      headless: "new",
       args: [
         "--no-sandbox",
         "--disable-setuid-sandbox",
