@@ -1,4 +1,5 @@
 const puppeteer = require("puppeteer");
+const fs = require("fs"); // add fs at top for file writing
 
 (async () => {
   try {
@@ -33,6 +34,14 @@ const puppeteer = require("puppeteer");
       await page.evaluate(() => window.scrollBy(0, window.innerHeight));
       await page.waitForTimeout(2000);
     }
+
+    // === DEBUG: Save screenshot and page HTML ===
+    console.log("📸 Saving screenshot and HTML for debug...");
+    await page.screenshot({ path: "debug_screenshot.png", fullPage: true });
+    const html = await page.content();
+    fs.writeFileSync("debug_page.html", html);
+    console.log("✅ Screenshot and HTML saved");
+    console.log("Page HTML snippet:", html.slice(0, 500).replace(/\n/g, ""));
 
     console.log("🔍 Scraping listings...");
 
