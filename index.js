@@ -4,11 +4,15 @@ const puppeteer = require("puppeteer");
   try {
     console.log("🚀 Launching Puppeteer...");
 
+    const revision = '1263111';
+    const browserFetcher = puppeteer.createBrowserFetcher();
+    const revisionInfo = await browserFetcher.download(revision);
+
     const browser = await puppeteer.launch({
-  headless: "new",
-  args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  // no executablePath here
-});
+      headless: "new",
+      executablePath: revisionInfo.executablePath,
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    });
 
     console.log("🌐 Opening new page...");
     const page = await browser.newPage();
