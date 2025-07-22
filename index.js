@@ -2,6 +2,7 @@ const puppeteerExtra = require("puppeteer-extra");
 const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 puppeteerExtra.use(StealthPlugin());
 
+const puppeteer = require("puppeteer");
 const fs = require("fs");
 
 (async () => {
@@ -16,7 +17,9 @@ const fs = require("fs");
         "--disable-blink-features=AutomationControlled"
       ],
       ignoreDefaultArgs: ["--enable-automation"],
-      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined, // Optional for platforms like Render
+      executablePath: puppeteer
+        .createBrowserFetcher()
+        .revisionInfo("1263111").executablePath,
     });
 
     console.log("🌐 Opening new page...");
