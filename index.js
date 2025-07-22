@@ -1,16 +1,21 @@
-const puppeteer = require("puppeteer");
-const fs = require("fs"); // add fs at top for file writing
+const puppeteerExtra = require("puppeteer-extra");
+const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+puppeteerExtra.use(StealthPlugin());
+
+const puppeteer = require("puppeteer"); // Needed for browserFetcher and launching
+
+const fs = require("fs");
 
 (async () => {
   try {
-    console.log("🚀 Launching Puppeteer...");
+    console.log("🚀 Launching Puppeteer with stealth...");
 
     const revision = '1263111';
     const browserFetcher = puppeteer.createBrowserFetcher();
     const revisionInfo = await browserFetcher.download(revision);
 
-    const browser = await puppeteer.launch({
-      headless: true,  // changed from "new" to boolean true
+    const browser = await puppeteerExtra.launch({
+      headless: true,
       executablePath: revisionInfo.executablePath,
       args: [
         "--no-sandbox",
@@ -27,7 +32,7 @@ const fs = require("fs"); // add fs at top for file writing
       "https://www.backstage.com/casting/?geo=-118.2868%2C33.9993&radius=250&location=Los+Angeles%2C+California&exclude_worldwide=True&sort_by=relevance";
 
     console.log(`🔗 Navigating to: ${url}`);
-    await page.goto(url, { waitUntil: "networkidle2", timeout: 60000 }); // add 60s timeout
+    await page.goto(url, { waitUntil: "networkidle2", timeout: 60000 });
 
     console.log("📜 Scrolling page...");
     for (let i = 0; i < 5; i++) {
@@ -45,7 +50,6 @@ const fs = require("fs"); // add fs at top for file writing
 
     console.log("🔍 Scraping listings...");
 
-    // Check if any cards found before mapping
     const cardCount = await page.evaluate(() => document.querySelectorAll('[data-test="casting-call-card"]').length);
     console.log(`🔎 Found ${cardCount} casting call cards`);
 

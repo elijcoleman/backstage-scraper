@@ -7,7 +7,9 @@
     "postinstall": "node scripts/install-chromium.js"
   },
   "dependencies": {
-    "puppeteer": "^19.11.1"
+    "puppeteer": "^21.3.8",
+    "puppeteer-extra": "^3.3.4",
+    "puppeteer-extra-plugin-stealth": "^2.12.12"
   },
   "puppeteer": {
     "default_browser_revision": "1263111"
