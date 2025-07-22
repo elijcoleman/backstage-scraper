@@ -2,27 +2,21 @@ const puppeteerExtra = require("puppeteer-extra");
 const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 puppeteerExtra.use(StealthPlugin());
 
-const puppeteer = require("puppeteer"); // Needed for browserFetcher and launching
-
 const fs = require("fs");
 
 (async () => {
   try {
     console.log("🚀 Launching Puppeteer with stealth...");
 
-    const revision = '1263111';
-    const browserFetcher = puppeteer.createBrowserFetcher();
-    const revisionInfo = await browserFetcher.download(revision);
-
     const browser = await puppeteerExtra.launch({
       headless: true,
-      executablePath: revisionInfo.executablePath,
       args: [
         "--no-sandbox",
         "--disable-setuid-sandbox",
         "--disable-blink-features=AutomationControlled"
       ],
       ignoreDefaultArgs: ["--enable-automation"],
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined, // Optional for platforms like Render
     });
 
     console.log("🌐 Opening new page...");
@@ -40,7 +34,6 @@ const fs = require("fs");
       await page.waitForTimeout(2000);
     }
 
-    // === DEBUG: Save screenshot and page HTML ===
     console.log("📸 Saving screenshot and HTML for debug...");
     await page.screenshot({ path: "debug_screenshot.png", fullPage: true });
     const html = await page.content();
@@ -49,13 +42,6 @@ const fs = require("fs");
     console.log("Page HTML snippet:", html.slice(0, 500).replace(/\n/g, ""));
 
     console.log("🔍 Scraping listings...");
-
-    const cardCount = await page.evaluate(() => document.querySelectorAll('[data-test="casting-call-card"]').length);
-    console.log(`🔎 Found ${cardCount} casting call cards`);
-
-    if (cardCount === 0) {
-      throw new Error("No casting call cards found on the page");
-    }
 
     const listings = await page.evaluate(() => {
       const cards = document.querySelectorAll('[data-test="casting-call-card"]');

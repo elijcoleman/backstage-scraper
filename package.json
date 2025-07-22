@@ -3,13 +3,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "postinstall": "node scripts/install-chromium.js"
+    "start": "node index.js"
   },
   "dependencies": {
     "puppeteer": "^21.3.8",
     "puppeteer-extra": "^3.3.4",
-    "puppeteer-extra-plugin-stealth": "^2.12.12"
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
   },
   "puppeteer": {
     "default_browser_revision": "1263111"
